@@ -1,3 +1,3 @@
-# webpack-template
-Template for webpack projects
+# battleship testing project with odin
+Test Driven Development (TDD)
 
