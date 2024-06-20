@@ -64,6 +64,20 @@ export default class GameBoard {
     return true;
   }
 
+  receiveAttack(coordinates) {
+    const [x, y] = coordinates;
+
+    if (x < 0 || x > 9 || y < 0 || y > 9) return null;
+    if (this.#hits.has(coordinates.toString())) return null;
+
+    this.#hits.add(coordinates.toString());
+    if (!this.#board[x][y]) return false;
+
+    this.#board[x][y].hit();
+
+    return true;
+  }
+
   get board() {
     return this.#board;
   }
