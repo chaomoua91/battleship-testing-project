@@ -63,4 +63,8 @@ export default class GameBoard {
 
     return true;
   }
+
+  get board() {
+    return this.#board;
+  }
 }

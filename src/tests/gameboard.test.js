@@ -6,17 +6,17 @@ describe("Ship placement on board", () => {
   test("Valid horizontal placement", () => {
     expect(board.placeShip([1, 2], 5, "h")).toBe(true);
 
-    // expect(board.board[1][2]).toBeTruthy();
-    // expect(board.board[1][3]).toBeTruthy();
-    // expect(board.board[1][4]).toBeTruthy();
-    // expect(board.board[1][5]).toBeTruthy();
-    // expect(board.board[1][6]).toBeTruthy();
+    expect(board.board[1][2]).toBeTruthy();
+    expect(board.board[1][3]).toBeTruthy();
+    expect(board.board[1][4]).toBeTruthy();
+    expect(board.board[1][5]).toBeTruthy();
+    expect(board.board[1][6]).toBeTruthy();
   });
 
   test("Valid vertical placement", () => {
     expect(board.placeShip([3, 5], 4, "v")).toBe(true);
 
-    expect(board.board[(3, 5)]).toBeTruthy();
+    expect(board.board[3][5]).toBeTruthy();
     expect(board.board[4][5]).toBeTruthy();
     expect(board.board[5][5]).toBeTruthy();
     expect(board.board[6][5]).toBeTruthy();

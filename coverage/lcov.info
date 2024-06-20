@@ -4,12 +4,14 @@ FN:3,<instance_members_initializer>
 FN:10,GameBoard
 FN:19,placeShip
 FN:40,#isValidPlacement
-FNF:4
-FNH:4
+FN:67,get board
+FNF:5
+FNH:5
 FNDA:1,<instance_members_initializer>
 FNDA:1,GameBoard
 FNDA:10,placeShip
 FNDA:10,#isValidPlacement
+FNDA:4,get board
 DA:1,1
 DA:2,1
 DA:3,1
@@ -76,8 +78,12 @@ DA:63,2
 DA:64,2
 DA:65,2
 DA:66,1
-LF:66
-LH:66
+DA:67,1
+DA:68,4
+DA:69,4
+DA:70,1
+LF:70
+LH:70
 BRDA:3,0,0,1
 BRDA:10,1,0,1
 BRDA:11,2,0,10
@@ -111,8 +117,9 @@ BRDA:59,29,0,6
 BRDA:60,30,0,1
 BRDA:61,31,0,1
 BRDA:62,32,0,2
-BRF:33
-BRH:33
+BRDA:67,33,0,4
+BRF:34
+BRH:34
 end_of_record
 TN:
 SF:src\lib\ship.js
