@@ -65,4 +65,12 @@ describe("Ship placement on board", () => {
       expect(board.receiveAttack([3, 10])).toBe(null);
     });
   });
+
+  test("All ships sunk", () => {
+    board.receiveAttack([4, 2]);
+    board.receiveAttack([5, 2]);
+    board.receiveAttack([6, 2]);
+
+    expect(board.allShipsSunk()).toBe(false);
+  });
 });
