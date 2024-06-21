@@ -1,4 +1,4 @@
-import _, { ceil } from "lodash";
+import _ from "lodash";
 import "./style.css";
 import Player from "./lib/player";
 import {
@@ -66,3 +66,32 @@ function startGame() {
     });
   });
 }
+
+document.addEventListener("DOMContentLoaded", placeShips);
+
+randomButton.addEventListener("click", placeShips);
+startButton.addEventListener("click", () => {
+  npcGrid.classList.add("started");
+  buttonContainer.classList.add("hidden");
+  restartContainer.classList.remove("hidden");
+
+  startGame();
+});
+
+restartButton.addEventListener("click", () => {
+  npcGrid.classList.remove("started");
+  buttonContainer.classList.remove("hidden");
+  restartContainer.classList.add("hidden");
+
+  placeShips();
+});
+
+playAgainButton.addEventListener("click", () => {
+  winnerDialog.close();
+
+  npcGrid.classList.remove("started");
+  buttonContainer.classList.remove("hidden");
+  restartContainer.classList.add("hidden");
+
+  placeShips();
+});
