@@ -9,7 +9,7 @@ import {
 } from "./lib/gameUtils";
 
 const buttonContainer = document.querySelector(".start-buttons");
-const restartContainer = document.querySelector(".restart-buttons");
+const restartContainer = document.querySelector(".restart-button");
 
 const randomButton = document.querySelector("#random-place");
 const startButton = document.querySelector("#start-game");
@@ -18,8 +18,8 @@ const playAgainButton = document.querySelector("#play-again");
 
 const winnerDialog = document.querySelector("#winner-dialog");
 
-const playGrid = document.querySelector("#player-grid");
-const npcGrid = document.querySelector("npc-grid");
+const playerGrid = document.querySelector("#player-grid");
+const npcGrid = document.querySelector("#npc-grid");
 
 let humanPlayer;
 let npcPlayer;
@@ -31,7 +31,7 @@ function placeShips() {
   placeRandom(humanPlayer);
   placeRandom(npcPlayer);
 
-  playGrid.innerHTML = "";
+  playerGrid.innerHTML = "";
   npcGrid.innerHTML = "";
 
   createGrid(playerGrid, humanPlayer);
@@ -42,8 +42,8 @@ function startGame() {
   const npcCells = document.querySelectorAll("#npc-grid .cell");
   npcCells.forEach((cell) => {
     cell.addEventListener("click", () => {
-      const x = number(cell.dataset.x);
-      const y = number(cell.dataset.y);
+      const x = Number(cell.dataset.x);
+      const y = Number(cell.dataset.y);
 
       const attackResult = npcPlayer.gameboard.receiveAttack([x, y]);
 
