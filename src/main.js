@@ -37,3 +37,32 @@ function placeShips() {
   createGrid(playerGrid, humanPlayer);
   createGrid(npcGrid, npcPlayer);
 }
+
+function startGame() {
+  const npcCells = document.querySelectorAll("#npc-grid .cell");
+  npcCells.forEach((cell) => {
+    cell.addEventListener("click", () => {
+      const x = number(cell.dataset.x);
+      const y = number(cell.dataset.y);
+
+      const attackResult = npcPlayer.gameboard.receiveAttack([x, y]);
+
+      if (attackResult === null) return;
+
+      if (attackResult) {
+        cell.classList.add("hit");
+      } else {
+        cell.classList.add("miss");
+      }
+
+      if (npcPlayer.gameboard.allShipsSunk()) {
+        displayWinner("Player", winnerDialog);
+      }
+
+      attackRandom(humanPlayer);
+      if (humanPlayer.gameboard.allShipsSunk()) {
+        displayWinner("Computer", winnerDialog);
+      }
+    });
+  });
+}
