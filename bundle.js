@@ -129,6 +129,50 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 
 /***/ }),
 
+/***/ "./src/lib/gameUtils.js":
+/*!******************************!*\
+  !*** ./src/lib/gameUtils.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   attackRandom: () => (/* binding */ attackRandom),\n/* harmony export */   createGrid: () => (/* binding */ createGrid),\n/* harmony export */   displayWinner: () => (/* binding */ displayWinner),\n/* harmony export */   placeRandom: () => (/* binding */ placeRandom)\n/* harmony export */ });\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./player */ \"./src/lib/player.js\");\n\r\n\r\nfunction getRandomOrientation() {\r\n  const index = math.floor(Math.random() * 2);\r\n\r\n  return index === 0 ? \"h\" : \"v\";\r\n}\r\n\r\nfunction placeRandom(player) {\r\n  for (let i = 2; i < 7; i++) {\r\n    let x = Math.floor(Math.random() * 10) + 1;\r\n    let y = Math.floor(Math.random() * 10) + 1;\r\n    let orientation = getRandomOrientation();\r\n\r\n    let placementResult = player.gameboard.placeShip([x, y], i, orientation);\r\n\r\n    while (!placementResult) {\r\n      x = Math.floor(Math.random() * 10) + 1;\r\n      y = Math.floor(Math.random() * 10) + 1;\r\n      orientation = getRandomOrientation();\r\n    }\r\n  }\r\n}\r\n\r\nfunction createGrid(container, player) {\r\n  const { board } = player.gameboard;\r\n\r\n  for (let i = 0; i < 10; i++) {\r\n    const row = document.createElement(\"div\");\r\n    row.classList.add(\"row\");\r\n\r\n    for (let j = 0; j < 10; j++) {\r\n      const cell = document.createElement(\"div\");\r\n      cell.classList.add(\"cell\");\r\n      if (player.type === \"human\" && board[i][j]) cell.classList.add(\"ship\");\r\n\r\n      cell.dataset.x = i.toString();\r\n      cell.dataset.y = j.toString();\r\n\r\n      row.appendChild(cell);\r\n    }\r\n    container.appendChild(row);\r\n  }\r\n}\r\nfunction displayWinner(player, dialog) {\r\n  const winnerMessage = dialog.querySelector(\"#winner-msg\");\r\n  winnerMessage.textContent = `${player} wins`;\r\n\r\n  dialog.showModal();\r\n}\r\n\r\nfunction attackRandom(player) {\r\n  let attackResult = null;\r\n  let x = 0;\r\n  let y = 0;\r\n\r\n  while (attackResult === null) {\r\n    x = Math.floor(Math.random() * 10) + 1;\r\n    y = Math.floor(Math.random() * 10) + 1;\r\n\r\n    attackResult = player.gameboard.receiveAttack([x, y]);\r\n  }\r\n\r\n  const cell = document.querySelector(\r\n    `#player-grid [data-x=\"${x}\"][data-y=\"${y}\"]`\r\n  );\r\n\r\n  if (attackResult) {\r\n    cell.classList.add(\"hit\");\r\n  } else {\r\n    cell.classList.add(\"miss\");\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack://battleship-testing-project/./src/lib/gameUtils.js?");
+
+/***/ }),
+
+/***/ "./src/lib/gameboard.js":
+/*!******************************!*\
+  !*** ./src/lib/gameboard.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ GameBoard)\n/* harmony export */ });\n/* harmony import */ var _ship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ship */ \"./src/lib/ship.js\");\n\r\n\r\nclass GameBoard {\r\n  #board;\r\n\r\n  #ships;\r\n\r\n  #hits;\r\n\r\n  constructor() {\r\n    this.#board = Array.from({ length: 10 }, () =>\r\n      Array.from({ length: 10 }, () => null)\r\n    );\r\n\r\n    this.#ships = [];\r\n    this.#hits = new Set();\r\n  }\r\n\r\n  placeShip(coordinates, length, orientation) {\r\n    if (!this.#isValidPlacement(coordinates, length, orientation)) return false;\r\n\r\n    const [x, y] = coordinates;\r\n    const ship = new _ship__WEBPACK_IMPORTED_MODULE_0__[\"default\"](length);\r\n    this.#ships.push(ship);\r\n\r\n    if (orientation === \"h\") {\r\n      for (let i = 0; i < length; i++) {\r\n        this.#board[x][y + i] = ship;\r\n      }\r\n    }\r\n\r\n    if (orientation === \"v\") {\r\n      for (let i = 0; i < length; i++) {\r\n        this.#board[x + i][y] = ship;\r\n      }\r\n    }\r\n    return true;\r\n  }\r\n\r\n  #isValidPlacement(coordinates, length, orientation) {\r\n    const [x, y] = coordinates;\r\n\r\n    // If starting coordinates are out of gameboard bounds\r\n    if (x < 0 || x > 9 || y < 0 || y > 9) return false;\r\n\r\n    if (orientation === \"h\") {\r\n      // If ship would exceed horizontal bounds\r\n      if (y + length - 1 > 9) return false;\r\n\r\n      // If there already is a ship in the new ships path\r\n      for (let i = 0; i < length; i++) {\r\n        if (this.#board[x][y + i]) return false;\r\n      }\r\n    }\r\n\r\n    if (orientation === \"v\") {\r\n      if (x + length - 1 > 9) return false;\r\n\r\n      for (let i = 0; i < length; i++) {\r\n        if (this.#board[x + i][y]) return false;\r\n      }\r\n    }\r\n\r\n    return true;\r\n  }\r\n\r\n  receiveAttack(coordinates) {\r\n    const [x, y] = coordinates;\r\n\r\n    if (x < 0 || x > 9 || y < 0 || y > 9) return null;\r\n    if (this.#hits.has(coordinates.toString())) return null;\r\n\r\n    this.#hits.add(coordinates.toString());\r\n    if (!this.#board[x][y]) return false;\r\n\r\n    this.#board[x][y].hit();\r\n\r\n    return true;\r\n  }\r\n\r\n  allShipsSunk() {\r\n    return this.#ships.every((ship) => ship.isSunk());\r\n  }\r\n\r\n  get board() {\r\n    return this.#board;\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack://battleship-testing-project/./src/lib/gameboard.js?");
+
+/***/ }),
+
+/***/ "./src/lib/player.js":
+/*!***************************!*\
+  !*** ./src/lib/player.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Player)\n/* harmony export */ });\n/* harmony import */ var _gameboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gameboard */ \"./src/lib/gameboard.js\");\n\r\n\r\nclass Player {\r\n  #board;\r\n\r\n  #type;\r\n\r\n  constructor(type) {\r\n    this.#board = new _gameboard__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\r\n    this.#type = type;\r\n  }\r\n\r\n  get gameboard() {\r\n    return this.#board;\r\n  }\r\n\r\n  get type() {\r\n    return this.#type;\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack://battleship-testing-project/./src/lib/player.js?");
+
+/***/ }),
+
+/***/ "./src/lib/ship.js":
+/*!*************************!*\
+  !*** ./src/lib/ship.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Ship)\n/* harmony export */ });\nclass Ship {\r\n  #length;\r\n  #hits;\r\n\r\n  constructor(length) {\r\n    this.#length = length;\r\n    this.#hits = 0;\r\n  }\r\n  get length() {\r\n    return this.#length;\r\n  }\r\n\r\n  hit() {\r\n    this.#hits += 1;\r\n  }\r\n\r\n  get hits() {\r\n    return this.#hits;\r\n  }\r\n  isSunk() {\r\n    return this.#hits >= this.#length;\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack://battleship-testing-project/./src/lib/ship.js?");
+
+/***/ }),
+
 /***/ "./src/main.js":
 /*!*********************!*\
   !*** ./src/main.js ***!
@@ -136,7 +180,7 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ \"./node_modules/lodash/lodash.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\r\n\r\n\n\n//# sourceURL=webpack://battleship-testing-project/./src/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ \"./node_modules/lodash/lodash.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _lib_player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/player */ \"./src/lib/player.js\");\n/* harmony import */ var _lib_gameUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/gameUtils */ \"./src/lib/gameUtils.js\");\n\r\n\r\n\r\n\r\n\r\nconst buttonContainer = document.querySelector(\".start-buttons\");\r\nconst restartContainer = document.querySelector(\".restart-buttons\");\r\n\n\n//# sourceURL=webpack://battleship-testing-project/./src/main.js?");
 
 /***/ })
 
