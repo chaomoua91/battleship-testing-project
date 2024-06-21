@@ -10,3 +10,16 @@ import {
 
 const buttonContainer = document.querySelector(".start-buttons");
 const restartContainer = document.querySelector(".restart-buttons");
+
+const randomButton = document.querySelector("#random-place");
+const startButton = document.querySelector("#start-game");
+const restartButton = document.querySelector("#restart");
+const playAgainButton = document.querySelector("#play-again");
+
+const winnerDialog = document.querySelector("#winner-dialog");
+
+const playGrid = document.querySelector("#player-grid");
+const npcGrid = document.querySelector("npc-grid");
+
+let humanPlayer;
+let npcPlayer;
