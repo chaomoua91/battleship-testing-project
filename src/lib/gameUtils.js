@@ -24,8 +24,10 @@ export function placeRandom(player) {
 }
 
 export function createGrid(container, player) {
+  // Look at the player's board
   const { board } = player.gameboard;
 
+  // Create 10 cells in each row
   for (let i = 0; i < 10; i++) {
     const row = document.createElement("div");
     row.classList.add("row");
