@@ -6,18 +6,20 @@ export default class Ship {
     this.#length = length;
     this.#hits = 0;
   }
-  get length() {
-    return this.#length;
-  }
 
   hit() {
     this.#hits += 1;
   }
 
-  get hits() {
-    return this.#hits;
-  }
   isSunk() {
     return this.#hits >= this.#length;
+  }
+
+  get length() {
+    return this.#length;
+  }
+
+  get hits() {
+    return this.#hits;
   }
 }

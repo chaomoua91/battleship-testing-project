@@ -67,10 +67,17 @@ describe("Ship placement on board", () => {
   });
 
   test("All ships sunk", () => {
+    const board = new GameBoard();
+
+    // Place a ship vertically from (4, 2) with length 3
+    board.placeShip([4, 2], 3, "v");
+
+    // Receive attacks to sink the ship
     board.receiveAttack([4, 2]);
     board.receiveAttack([5, 2]);
     board.receiveAttack([6, 2]);
 
-    expect(board.allShipsSunk()).toBe(false);
+    // Assert that all ships are sunk
+    expect(board.allShipsSunk()).toBe(true);
   });
 });

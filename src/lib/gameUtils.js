@@ -18,6 +18,7 @@ export function placeRandom(player) {
       x = Math.floor(Math.random() * 10) + 1;
       y = Math.floor(Math.random() * 10) + 1;
       orientation = getRandomOrientation();
+      placementResult = player.gameboard.placeShip([x, y], i, orientation); // Reassignment added here
     }
   }
 }
@@ -49,7 +50,7 @@ export function displayWinner(player, dialog) {
   dialog.showModal();
 }
 
-export function attackRandom(player) {
+export function attackRandom(player, gridSelector = "#player-grid") {
   let attackResult = null;
   let x = 0;
   let y = 0;
@@ -62,7 +63,7 @@ export function attackRandom(player) {
   }
 
   const cell = document.querySelector(
-    `#player-grid [data-x="${x}"][data-y="${y}"]`
+    `${gridSelector} [data-x="${x}"][data-y="${y}"]`
   );
 
   if (attackResult) {

@@ -25,6 +25,7 @@ let humanPlayer;
 let npcPlayer;
 
 function placeShips() {
+  console.log("Placing ships...");
   humanPlayer = new Player("human");
   npcPlayer = new Player("computer");
 
@@ -36,9 +37,11 @@ function placeShips() {
 
   createGrid(playerGrid, humanPlayer);
   createGrid(npcGrid, npcPlayer);
+  console.log("Ships placed.");
 }
 
 function startGame() {
+  console.log("Starting game...");
   const npcCells = document.querySelectorAll("#npc-grid .cell");
   npcCells.forEach((cell) => {
     cell.addEventListener("click", () => {
@@ -59,18 +62,21 @@ function startGame() {
         displayWinner("Player", winnerDialog);
       }
 
-      attackRandom(humanPlayer);
+      attackRandom(humanPlayer, "#player-grid");
       if (humanPlayer.gameboard.allShipsSunk()) {
         displayWinner("Computer", winnerDialog);
       }
     });
   });
+  console.log("Game started.");
 }
 
 document.addEventListener("DOMContentLoaded", placeShips);
 
 randomButton.addEventListener("click", placeShips);
+
 startButton.addEventListener("click", () => {
+  console.log("Game start button clicked.");
   npcGrid.classList.add("started");
   buttonContainer.classList.add("hidden");
   restartContainer.classList.remove("hidden");
@@ -79,6 +85,7 @@ startButton.addEventListener("click", () => {
 });
 
 restartButton.addEventListener("click", () => {
+  console.log("Restart button clicked.");
   npcGrid.classList.remove("started");
   buttonContainer.classList.remove("hidden");
   restartContainer.classList.add("hidden");
@@ -87,6 +94,7 @@ restartButton.addEventListener("click", () => {
 });
 
 playAgainButton.addEventListener("click", () => {
+  console.log("Play again button clicked.");
   winnerDialog.close();
 
   npcGrid.classList.remove("started");

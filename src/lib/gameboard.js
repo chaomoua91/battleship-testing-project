@@ -34,6 +34,7 @@ export default class GameBoard {
         this.#board[x + i][y] = ship;
       }
     }
+
     return true;
   }
 
